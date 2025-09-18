@@ -55,47 +55,59 @@ function setupEventListeners() {
   })
 }
 
-// Navigation Functions
 function navigateTo(page) {
-  if (isLoading || page === currentPage) return
+  if (isLoading || page === currentPage) return;
 
-  setLoading(true)
-  updateActiveNavigation(page)
+  setLoading(true);
+  updateActiveNavigation(page);
 
   // Hide current page with fade effect
-  const currentPageElement = document.getElementById(currentPage + "-page")
+  const currentPageElement = document.getElementById(currentPage + "-page");
   if (currentPageElement) {
-    currentPageElement.classList.add("fade-out")
+    currentPageElement.classList.add("fade-out");
 
     setTimeout(() => {
       // Hide all pages
       document.querySelectorAll(".page-content").forEach((el) => {
-        el.classList.add("hidden")
-        el.classList.remove("fade-out")
-      })
+        el.classList.add("hidden");
+        el.classList.remove("fade-out");
+      });
 
       // Show target page
-      const targetPage = document.getElementById(page + "-page")
+      const targetPage = document.getElementById(page + "-page");
       if (targetPage) {
-        targetPage.classList.remove("hidden")
-        currentPage = page
+        targetPage.classList.remove("hidden");
+        currentPage = page;
+
+        // Update URL using history.pushState
+        history.pushState({ page: page }, page, "/" + page); // Esto cambia la URL
 
         // Scroll to top smoothly
-        window.scrollTo({ top: 0, behavior: "smooth" })
+        window.scrollTo({ top: 0, behavior: "smooth" });
 
         // Refresh AOS animations
         if (typeof AOS !== "undefined") {
-          AOS.refresh()
+          AOS.refresh();
         }
       }
 
-      setLoading(false)
-    }, 300)
+      setLoading(false);
+    }, 300);
   }
 
   // Close mobile menu if open
-  closeMobileMenu()
+  closeMobileMenu();
 }
+window.addEventListener("popstate", function (event) {
+  const page = window.location.pathname.substring(1); // Obtener la página de la URL
+  if (page) {
+    navigateTo(page); // Redirigir a la página correspondiente
+  } else {
+    navigateTo("home"); // Si la URL está vacía, ir al inicio
+  }
+});
+
+
 
 function updateActiveNavigation(page) {
   // Update desktop navigation
@@ -114,6 +126,7 @@ function updateActiveNavigation(page) {
     }
   })
 }
+
 
 // Mobile Menu Functions
 function toggleMobileMenu() {
