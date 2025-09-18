@@ -3,7 +3,7 @@
 
 
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog de Colegio  CEP - Últimas Noticias</title>
   <link rel="stylesheet" href="../static/CSS/blog.css" />
@@ -56,13 +56,26 @@
         </div>
 
         <div class="hidden lg:flex items-center space-x-8 text-black">
-          <a href="index.html#hero" class="nav-link active text-black">Inicio</a>
-          <a href="index.html#nosotros" class="nav-link text-black">Nosotros</a>
+          <!-- Enlace que navega a la sección #hero en index.html -->
+          <a href="#" onclick="navigateTo('hero')" class="nav-link active text-black">Inicio</a>
+
+          <!-- Enlace que navega a la sección #nosotros en index.html -->
+          <a href="#" onclick="navigateTo('nosotros')" class="nav-link text-black">Nosotros</a>
+
+          <!-- Página blog -->
           <a href="blog.html" class="nav-link text-black">Blog</a>
-          <a href="estudiar-aqui.html" class="nav-link text-black">¿Porque estudiar aquí?</a>
-          <a href="index.html#contacto" class="nav-link text-black">Contacto</a>
-          <a href="index.html#matricula" class="nav-link text-black">Matrícula</a>
-          <a href="index.html#login-modal" class="btn-primary px-6 py-2 text-white bg-primary">
+
+          <!-- Enlace a la sección #estudiar-aqui en index.html -->
+          <a href="#" onclick="navigateTo('estudiar-aqui')" class="nav-link text-black">¿Por qué estudiar aquí?</a>
+
+          <!-- Enlace que navega a la sección #contacto en index.html -->
+          <a href="#" onclick="navigateTo('contacto')" class="nav-link text-black">Contacto</a>
+
+          <!-- Enlace que navega a la sección #matricula en index.html -->
+          <a href="#" onclick="navigateTo('matricula')" class="nav-link text-black">Matrícula</a>
+
+          <!-- Enlace para abrir el modal de inicio de sesión -->
+          <a href="#" onclick="navigateTo('login-modal')" class="btn-primary px-6 py-2 text-white bg-primary">
             <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
           </a>
         </div>
@@ -313,4 +326,39 @@
         </div>
         <script src="../static/JS/script.js"></script>
         <!-- Quick Links -->
-        <div>
+      </div>
+  </footer>
+  <script>
+    // Función para navegar a una sección dentro de la misma página (SPA)
+    function navigateTo(sectionId) {
+      // Ocultar todas las secciones primero
+      const allSections = document.querySelectorAll('.section');
+      allSections.forEach(section => {
+        section.classList.add('hidden');  // Agrega la clase "hidden" para ocultar la sección
+      });
+
+      // Mostrar la sección correspondiente
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.classList.remove('hidden');  // Quita la clase "hidden" para mostrar la sección
+      }
+
+      // Opcional: Actualizar la URL (sin recargar la página) para reflejar el cambio de sección
+      history.pushState(null, null, `#${sectionId}`);
+
+      // Desplazar hacia la parte superior de la página
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Event Listener para cargar la sección al cargar la página dependiendo del hash
+    window.addEventListener('load', function () {
+      const hash = window.location.hash.slice(1);  // Obtener el hash de la URL (ej. '#hero')
+      if (hash) {
+        navigateTo(hash);
+      }
+    });
+
+  </script>
+</body>
+
+</html>
